@@ -1,18 +1,18 @@
-import { envs  } from "./config/env/enviroments.js";
+import { envs } from "./config/env/enviroments.js";
 import app from "./app.js";
 import { authenticate, syncUp } from "./config/database/database.js";
 
-async function main () {
-    try {
-        await authenticate()
-        await syncUp()
-    } catch (error) {
-        console.log(error)
-    }
+async function main() {
+  try {
+    await authenticate();
+    await syncUp();
+  } catch (error) {
+    console.log(error);
+  }
 }
 
-main()
+main();
 
 app.listen(envs.PORT, () => {
-    console.log(`Server running on port ${envs.PORT}`)
-})
+  console.log(`Server running on port ${envs.PORT}`);
+});

@@ -6,16 +6,15 @@ import {
   findOneUser,
   updateUser,
 } from "./users.controller.js";
+import { validateExistUser } from "../users/users.middleware.js";
 
 export const router = Router();
 
-router
-.route('/')
-.get(findAllUsers)
-.post(createUser)
+router.route("/").get(findAllUsers).post(createUser);
 
 router
-.route('/:id')
-.get(findOneUser)
-.patch(updateUser)
-.delete(deleteUser)
+  .use("/:id", validateExistUser)
+  .route("/:id")
+  .get(findOneUser)
+  .patch(updateUser)
+  .delete(deleteUser);

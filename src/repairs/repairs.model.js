@@ -14,15 +14,25 @@ export const Repair = sequelize.define("repair", {
     allowNull: false,
   },
 
+  motorsNumber: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+
+  description: {
+    type: DataTypes.STRING(255),
+    allowNull: false,
+  },
+
   createdBy: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    field: 'created_By',
-  }, 
+    field: "created_By",
+  },
 
   status: {
-    type: DataTypes.ENUM('pending', 'completed', 'cancelled'),
+    type: DataTypes.ENUM("pending", "completed", "cancelled"),
     allowNull: false,
-    defaultValue: 'pending'
-  }
+    defaultValue: "pending",
+  },
 });

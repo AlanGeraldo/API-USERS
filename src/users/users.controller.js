@@ -1,84 +1,57 @@
+import { catchAsync } from "../errors/index.js";
+import { validatePartialUser, validateUser } from "./users.schema.js";
 import { UserService } from "./users.services.js";
 
 const userService = new UserService();
 
-export const findAllUsers = async (req, res) => {
-  try {
-    const users = await userService.findAllUsers();
+export const findAllUsers = catchAsync(async (req, res, next) => {
+  const users = await userService.findAllUsers();
 
-    return res.json(users);
-  } catch (error) {
-    return res.status(500).json(error);
+  return res.json(users);
+});
+
+export const createUser = catchAsync(async (req, res, next) => {
+  const { hasError, errorMessages, userData } = validateUser(req.body);
+
+  if (hasError) {
+    return res.status(422).json({
+      status: "error",
+      message: errorMessages,
+    });
   }
-};
 
-export const createUser = async (req, res) => {
-  try {
-    const user = await userService.createUser(req.body);
+  const user = await userService.createUser(userData);
 
-    return res.status(201).json(user);
-  } catch (error) {
-    return res.status(500).json(error);
+  return res.status(201).json(user);
+});
+
+export const findOneUser = catchAsync(async (req, res, next) => {
+  const { user } = req;
+
+  return res.json(user);
+});
+
+export const updateUser = catchAsync(async (req, res, next) => {
+  const { user } = req;
+
+  const { errorMessages, hasError, userData } = validatePartialUser(req.body);
+
+  if (hasError) {
+    return res.status(422).json({
+      status: "error",
+      message: errorMessages,
+    });
   }
-};
 
-export const findOneUser = async (req, res) => {
-  try {
-    const { id } = req.params;
+  const updatedUser = await userService.updateUser(user, userData);
 
-    const user = await userService.findOneUser(id);
+  return res.json(updatedUser);
+});
 
-    if (!user) {
-      return res.status(404).json({
-        status: "error",
-        message: `User with id: ${id} not found`,
-      });
-    }
+export const deleteUser = catchAsync(async (req, res, next) => {
+  const { user } = req;
 
-    return res.json(user);
-  } catch (error) {
-    return res.status(500).json(error);
-  }
-};
+  await userService.deleteUser(user);
 
-export const updateUser = async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    const user = await userService.findOneUser(id);
-
-    if (!user) {
-      return res.status(404).json({
-        status: "error",
-        message: `User with id: ${id} not found`,
-      });
-    }
-
-    const updatedUser = await userService.updateUser(user, req.body);
-
-    return res.json(updatedUser);
-  } catch (error) {
-    return res.status(500).json(error);
-  }
-};
-
-export const deleteUser = async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    const user = await userService.findOneUser(id);
-
-    if (!user) {
-      return res.status(404).json({
-        status: "error",
-        message: `User with id: ${id} not found`,
-      });
-    }
-
-    await userService.deleteUser(user);
-
-    res.status(204).json(null);
-  } catch (error) {
-    return res.status(500).json(error);
-  }
-};
+  res.status(204).json(null);
+});

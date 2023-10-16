@@ -26,9 +26,9 @@ export class UserService {
     return await user.update(data);
   }
 
-  async deleteUser (user) {
+  async deleteUser(user) {
     return await user.update({
-        status: false
-    })
+      status: false,
+    });
   }
 }

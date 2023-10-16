@@ -22,13 +22,13 @@ export class RepairsService {
     return await Repair.create(data);
   }
 
-  async updateRepair (repair, data) {
-    return await repair.update({data, status: 'completed'})
+  async updateRepair(repair) {
+    return await repair.update({ status: "completed" });
   }
 
-  async deleteRepair (repair) {
+  async deleteRepair(repair) {
     return await repair.update({
-        status: 'cancelled'
-    })
+      status: "cancelled",
+    });
   }
 }

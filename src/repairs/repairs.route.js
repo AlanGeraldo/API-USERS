@@ -15,12 +15,12 @@ router.use(protect);
 
 router
   .route("/")
-  .get(restrictTo("employee"), findAllRepairs)
-  .post(restrictTo("employee"), createRepairs);
+  .get(/* restrictTo("employee") */ findAllRepairs)
+  .post(/* restrictTo("employee"), */ createRepairs);
 
 router
   .use("/:id", validateExistRepair)
   .route("/:id")
-  .get(restrictTo("employee"), findOneRepair)
-  .patch(restrictTo("employee"), updateRepair)
-  .delete(restrictTo("employee"), deleteRepair);
+  .get(/* restrictTo("employee"), */ findOneRepair)
+  .patch(/* restrictTo("employee"), */ updateRepair)
+  .delete(/* restrictTo("employee"), */ deleteRepair);

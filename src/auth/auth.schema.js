@@ -47,3 +47,19 @@ export const validateLogin = (data) => {
     loginData,
   };
 };
+
+export const validateUserAuth = (data) => {
+  const result = registerSchema.partial().safeParse(data)
+
+  const {
+    data: userData,
+    errorMessages,
+    hasError
+  } = extracValidationData(result)
+
+  return {
+    errorMessages,
+    hasError,
+    userData
+  }
+}

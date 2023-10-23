@@ -14,6 +14,14 @@ export class AuthService {
     });
   }
 
+  async findOneUserAuth(id) {
+    return await Register.findOne({
+      where: {
+        id,
+      },
+    });
+  }
+
   async findOneByEmail(email) {
     return await Register.findOne({
       where: {
@@ -21,5 +29,13 @@ export class AuthService {
         status: true,
       },
     });
+  }
+
+  async updateUser (user,data) {
+    return await user.update(data)
+  }
+
+  async deleteuserAuth (user) {
+    return await user.update({status: false})
   }
 }

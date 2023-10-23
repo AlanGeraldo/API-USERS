@@ -5,7 +5,7 @@ import { RepairsService } from "./repairs.services.js";
 const repairService = new RepairsService();
 
 export const findAllRepairs = catchAsync(async (req, res, next) => {
-  const repairs = await repairService.findAllRepairs();
+  const repairs = await repairService.findAllWithData();
 
   return res.json(repairs);
 });

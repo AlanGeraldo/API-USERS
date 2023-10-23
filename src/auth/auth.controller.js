@@ -1,7 +1,7 @@
 import { verifyPassword } from "../config/plugin/encripted-password.plugin.js";
 import generateJWT from "../config/plugin/generate-jwt.plugin.js";
 import { AppError, catchAsync } from "../errors/index.js";
-import { validateLogin, validateRegister } from "./auth.schema.js";
+import { validateLogin, validateRegister, validateUserAuth } from "./auth.schema.js";
 import { AuthService } from "./auth.services.js";
 
 const authService = new AuthService();
@@ -68,3 +68,32 @@ export const register = catchAsync(async (req, res, next) => {
     },
   });
 });
+
+export const updateUser = catchAsync( async (req, res, next) => {
+  const { user } = req;
+
+  const {
+    errorMessages,
+    hasError,
+    userData
+  } = validateUserAuth(req.body)
+
+  if (hasError) {
+    return res.status(422).json({
+      status: 'error',
+      message: errorMessages,
+    })
+  }
+
+  const updateUser = await authService.updateUser(user, userData)
+
+  return res.json(updateUser)
+})
+
+export const deleteUserAuth = catchAsync( async (req, res, next) => {
+  const { user } = req;
+
+  await authService.deleteuserAuth(user)
+
+  res.status(204).json(null)
+})
